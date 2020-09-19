@@ -26,8 +26,6 @@ def set_header():
 
 @app.route('/')
 def root():
-    return "Hello world!"
-    print("appp", app)
     query = urlparse(request.full_path).query
     query_components = dict(parse_qsl(query))
     next = query_components.get('n', None)
