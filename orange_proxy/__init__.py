@@ -28,10 +28,11 @@ def root():
         response = Response(generate(), headers=dict(r.headers))
         response.status_code = r.status_code
 
-        # remove checked transfer header while forwarding back to browser
+        # remove chunked transfer header while forwarding back to browser
         r2 = r.headers.copy()
         r2.pop('Transfer-Encoding', None)
         response.headers = dict(r2)
+
         LOG.critical("response header: %s\n\n", r2)
         LOG.critical("response: %s\n", response)
 
@@ -40,8 +41,8 @@ def root():
 
 
 def make_request(url, method, headers={}):
-    LOG.debug("making request...")
-    LOG.debug("Sending %s %s with headers: %s\n", method, url, headers)
+    LOG.critical("making request...")
+    LOG.critical("Sending %s %s with headers: %s\n", method, url, headers)
     resp = requests.request(
         method,
         url,
@@ -60,7 +61,7 @@ def get_enrich_headers():
     }
     enriched = dict(request.headers).copy()
     enriched.update(inject)
-    LOG.debug("enriched headers: %s\n", enriched)
+    LOG.critical("enriched headers: %s\n", enriched)
     return enriched
 
 
@@ -68,7 +69,7 @@ def get_next_url():
     query = urlparse(request.full_path).query
     query_components = dict(parse_qsl(query))
     next = query_components.get('n', None)
-    LOG.debug("next param: %s", next)
+    LOG.critical("next param: %s", next)
     return next
 
 if __name__ == "__main__":
