@@ -15,7 +15,7 @@ def root():
     next = get_next_url()
     if (next is not None):
         enriched_headers = get_enrich_headers()
-        enriched_headers.pop('Host')
+        enriched_headers.pop('Host', None)
         r = make_request(
             next,
             request.method,
@@ -29,8 +29,10 @@ def root():
         response.status_code = r.status_code
 
         # remove checked transfer header while forwarding back to browser
-        r.headers.pop('Transfer-Encoding')
-        LOG.critical("response header: %s\n\n", r.headers)
+        r2 = r.headers.copy()
+        r2.pop('Transfer-Encoding', None)
+        response.headers = dict(r2)
+        LOG.critical("response header: %s\n\n", r2)
         LOG.critical("response: %s\n", response)
 
         return response
