@@ -8,10 +8,10 @@ Proxy features:
 How to install
 =========================
 Prerequisite: python3
-brew install pipenv
 
 Install requeired packages in python virtual env
 ```
+brew install pipenv
 pipenv install requests flask
 ```
 
