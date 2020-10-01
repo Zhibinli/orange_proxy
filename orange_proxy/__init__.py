@@ -27,6 +27,10 @@ def root():
                 yield chunk
         response = Response(generate(), headers=dict(r.headers))
         response.status_code = r.status_code
+
+        # remove checked transfer header while forwarding back to browser
+        r.headers.pop('Transfer-Encoding')
+        LOG.critical("response header: %s\n\n", r.headers)
         LOG.critical("response: %s\n", response)
 
         return response
